@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<!--
+	Solid State by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>VR Slide Ride</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<link rel="shortcut icon" type="image/x-icon" href="images/logo1.jpg" />
+	  </head>
+		<style media="screen">
+			body{
+			 display: flex;
+			 min-height: 100vh;
+			 width: 100%;
+				padding: 0;
+			margin: 0;
+			justify-content: center;
+			flex-direction: column;
+	
+			}
+	
+			#uploader{
+				-webkit-appearance: none;
+				width: 50%;
+				margin-bottom: 10px;
+			}
+			</style>
+	</head>
+	<body>
+
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+				<!-- Header -->
+					<header id="header" class="alt">
+						<h1><a href="index.html">VR Slide Ride</a></h1>
+					</header>
+					
+
+				<!-- Banner -->
+					<section id="banner">
+						<div class="inner">	
+								<h2>This is Slide Ride for VR</h2>
+							<p>Revolutionizing Virtual Reality for Education and Businesses Worldwide </p>
+						</div>
+					</section>
+
+				<!-- Wrapper -->
+					<section id="wrapper">
+
+						<!-- One -->
+							<section id="one" class="wrapper spotlight style1">
+								<div class="inner">
+									
+									<div class="content">
+										<h2 class="major">Choose a Power Point</h2>
+	
+										<progress value="0" max="100" id="uploader">0%</progress>
+										<label for="fileButton" class="custom-file-upload">
+												Choose 
+											</label>
+								
+										<input type="file" value="upload" id="fileButton" size="60" accept=".ppt, .pptx"/>							
+										<script
+			
+										src="https://www.gstatic.com/firebasejs/4.6.1/firebase
+										.js"></script>
+										<script>
+											
+										// Initialize Firebase
+										var config = {
+											apiKey: "AIzaSyAcZ0uMmCy5cY2RjQa8uWVZvbzVEmuKu8Y",
+											authDomain: "vrsliderrider.firebaseapp.com",
+											databaseURL: "https://vrsliderrider.firebaseio.com",
+											projectId: "vrsliderrider",
+											storageBucket: "vrsliderrider.appspot.com",
+											messagingSenderId: "616730288995"
+										};
+										firebase.initializeApp(config);
+
+											//elemnts
+											var uploader = document.getElementById('uploader');
+											var fileButton = document.getElementById('fileButton');
+
+											fileButton.addEventListener('change', function(e){
+
+												//get file
+												var file = e.target.files[0];
+												
+												//convert file;
+												
+												//prints extension as well
+												//create a storage ref
+												var storageRefFile =  firebase.storage().ref('ppts/' + file.name);
+												var downloadURL = "";
+												
+												
+												var randomNumber = 0;
+                 							   			for(var i =0; i<7; i++){
+                 							   				randomNumber+=Math.pow(Math.floor(Math.random()*8)+2,i);
+                 							   			}
+                 							   
+                 							   	var task =  storageRefFile.put(file);
+												task.on('state_changed',
+												
+													function progress(snapshot){
+														var percentage = (snapshot.bytesTransferred/
+														snapshot.totalBytes) * 100;
+														uploader.value = percentage;
+													},
+													function error(err){
+
+													},
+
+													function complete(){
+														alert("You have successfully uploaded your power point!");
+														setTimeout(function() {
+															uploader.value = 0;
+															window.location.href = "Second.html"; 
+														//	document.write(randomNumber);
+
+															}, 1300);
+															
+												
+													}						
+												
+												);
+												
+												 firebase.storage().ref().child('ppts/' +file.name).getDownloadURL().then(function(url) {
+  // `url` is the download URL for 'images/stars.jpg'
+
+  // This can be downloaded directly:
+  console.log(url);
+  
+  var textFile = null;
+  makeTextFile = function (text) {
+    var data = new Blob([text], {type: 'text/plain'});
+
+    // If we are replacing a previously generated file we need to
+    // manually revoke the object URL to avoid memory leaks.
+    //if (textFile !== null) {
+      window.URL.revokeObjectURL(textFile);
+    //}
+
+    textFile = window.URL.createObjectURL(data);
+
+    return textFile;
+  };
+	textFile = makeTextFile(url);
+	var textRefFile = firebase.storage().ref('ppts/' + randomNumber+'.txt');
+  	textRefFile.put(textFile);
+  
+}).catch(function(error) {
+  // Handle any errors
+});
+												
+											});
+												
+											</script>
+		
+									
+											<!-- 	<a href="#" class="special">Learn more</a>-->
+									</div>
+								</div>
+							</section>
+							
+							<section id="two" class="wrapper alt spotlight style2">
+									<div class="inner">
+										<a href="#" class="image"><img src="images/img.jpg" alt="" /></a>
+										<div class="content">
+											<h2 class="major">What is Slide Ride?</h2>
+											<p>Slide Ride revolutionizes the way presentations are made. Simply upload your powerpoint and wait to recieve your access code. Download the app, enter the code, and everyone gets access to your presentation in their own virtual reality world. It's that simple!</p>
+											<a href="https://play.google.com/store" class="special">Click here to download the app (Coming soon to Google Play)</a>
+										</div>
+									</div>
+								</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
